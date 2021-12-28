@@ -13,32 +13,32 @@ const AddProduct = ({ addProduct }) => {
     {
       key: 1,
       text: "ELECTRONICS",
-      value: 6,
+      value: 1,
     },
     {
       key: 2,
       text: "FURNITURE",
-      value: 7,
+      value: 2,
     },
     {
       key: 3,
       text: "HOME APPLIANCES",
-      value: 8,
+      value: 3,
     },
     {
       key: 4,
       text: "SPORTING GOODS",
-      value: 9,
+      value: 4,
     },
     {
       key: 5,
       text: "OUTDOOR",
-      value: 10,
+      value: 5,
     },
     {
       key: 6,
       text: "TOYS",
-      value: 11,
+      value: 6,
     },
   ];
   const inputStyle = {
@@ -54,47 +54,16 @@ const AddProduct = ({ addProduct }) => {
     handleSubmit,
     formState: { errors },
   } = useForm();
-  // const store = useContext(RootStoreContext);
-  // const {addProduct,updateProduct,getProductDetails,emptyCurrentProduct,currentProduct} = store.productStore;
+
   const history = useHistory();
   const [product, setProduct] = useState();
 
-  const initializeFormData = {
-    title: product ? product.title : "",
-    description: product ? product.description : "",
-    price: product ? product.price : 0,
-    rentPrice: product ? product.rentPrice : 0,
-    uploadedby: product ? product.title : 1,
-    dateposted: product ? product.dateposted : Date.now,
-    status: "",
-    category: product ? product.category : [],
-  };
   const onSubmitHandler = () => {
-    console.log(product);
-    addProduct(product);
-    // if (!currentProduct) addProduct(product).then(()=>{
-
-    //     history.push("/products")
-    //     toast.success("Product Added Successfully")
-    // });
-    // else updateProduct(product).then(()=>{
-
-    //     history.push("/products")
-    //     toast.success("Product Updated Successfully")
-    // });
+    addProduct(product, history);
   };
-
-  //   useEffect(() => {
-  //     if (match.params.id) {
-  //       getProductDetails(match.params.id);
-  //     }
-  //     return () => {
-  //       emptyCurrentProduct()
-  //     }
-  //   }, [getProductDetails, match.params.id,emptyCurrentProduct]);
 
   const onSelectItem = (item, data) => {
-    setProduct({ ...product, category: data.value });
+    setProduct({ ...product, category_ids: data.value });
   };
 
   const onSelect = (item) => {
@@ -105,14 +74,12 @@ const AddProduct = ({ addProduct }) => {
     <div>
       <MyHeader content="ADD PRODUCT" />
       <form onSubmit={handleSubmit(onSubmitHandler)}>
-        {/* <MyInput type="text" labelText="Title" height="40px" widthPercentage="100%" /> */}
         <div className="input">
           <input
-            {...register("title", { required: "Title is Required" })}
+            {...register("name", { required: "name is Required" })}
             type="text"
-            placeholder="title"
+            placeholder="name"
             style={inputStyle}
-            defaultValue={initializeFormData.title}
             onChange={(e) => onSelect(e)}
           />
           {errors.title && (
@@ -127,7 +94,6 @@ const AddProduct = ({ addProduct }) => {
           multiple
           search
           selection
-          defaultValue={initializeFormData.category}
           options={categories}
           onChange={(e, data) => onSelectItem(e, data)}
         />
@@ -139,7 +105,6 @@ const AddProduct = ({ addProduct }) => {
             })}
             placeholder="Description"
             style={{ height: "100px" }}
-            defaultValue={initializeFormData.description}
             onChange={(e) => onSelect(e)}
           />
           {errors.description && (
@@ -149,11 +114,10 @@ const AddProduct = ({ addProduct }) => {
         <div style={{ display: "flex" }}>
           <div className="input">
             <input
-              {...register("price", { required: "Price is Required" })}
+              {...register("buy_price", { required: "Price is Required" })}
               type="number"
               placeholder="Price"
               style={inputStyle}
-              defaultValue={initializeFormData.price}
               onChange={(e) => onSelect(e)}
             />
             {errors.price && (
@@ -162,11 +126,12 @@ const AddProduct = ({ addProduct }) => {
           </div>
           <div className="input">
             <input
-              {...register("rentPrice", { required: "Rent Price is Required" })}
+              {...register("rent_price", {
+                required: "Rent Price is Required",
+              })}
               type="number"
               placeholder="Rent Price"
               style={inputStyle}
-              defaultValue={initializeFormData.rentPrice}
               onChange={(e) => onSelect(e)}
             />
             {errors.rentPrice && (

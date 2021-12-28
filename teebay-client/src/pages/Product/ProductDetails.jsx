@@ -1,9 +1,9 @@
 import React from 'react'
 import TeebayButton from '../Common/TeebayButton';
 import TeebayHeader from '../Common/TeebayHeader';
-import { products } from './products';
-
-const ProductDetails = () => {
+import { connect } from 'react-redux';
+import PropTypes from "prop-types";
+const ProductDetails = ({product:{currentProduct},match}) => {
     const spanStyle = {
         color: "#788896",
         margin: "5px",
@@ -14,7 +14,7 @@ const ProductDetails = () => {
         margin: "5px",
         fontSize: "15px"
       }
-      const product = products[0];
+      // const product = products[0];
     //   const store = useContext(RootStoreContext);
     //   const { getProductDetails, emptyCurrentProduct, currentProduct: product, action, buyProduct } = store.productStore;
     //   const { currentUser } = store.userStore;
@@ -32,18 +32,18 @@ const ProductDetails = () => {
       return (
         <div>
           <TeebayHeader content="Product Details" />
-          {product && 
+          {currentProduct && 
            <div style={{ display: "flex", flexDirection: "column" }}>
     
            <h1>{product.title}</h1>
     
           
     
-           <span style={spanStyle}>Categories : {product.category}</span>
-           <span style={spanStyle}>Price : {product.price}$</span>
-           <span style={spanStyle}>Rent Price : {product.rentPrice}$</span>
+           <span style={spanStyle}>Categories : {currentProduct.category}</span>
+           <span style={spanStyle}>Price : {currentProduct.price}$</span>
+           <span style={spanStyle}>Rent Price : {currentProduct.rentPrice}$</span>
     
-           <p style={paraStyle}>{product.description}</p>
+           <p style={paraStyle}>{currentProduct.description}</p>
           
            <div>
     
@@ -56,5 +56,11 @@ const ProductDetails = () => {
         </div>
       )
 }
+ProductDetails.propTypes = {
+  product : PropTypes.object.isRequired
+}
+const mapStateToProps = (state) => ({
+  product: state.product,
+});
 
-export default ProductDetails
+export default connect(mapStateToProps)(ProductDetails)

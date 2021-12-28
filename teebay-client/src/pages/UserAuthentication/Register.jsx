@@ -1,18 +1,20 @@
 import React, { useContext, useRef } from 'react'
 import { useForm } from 'react-hook-form'
+import { connect } from 'react-redux'
 import { Link, useHistory } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { Grid, Header, Form, Segment, Button, Message } from 'semantic-ui-react'
 import TeebayButton from '../Common/TeebayButton'
-const Register = () => {
+import PropTypes from "prop-types";
+import { registerUser } from '../../actions/userAuthentication'
+const Register = ({registerUser}) => {
     const { register, handleSubmit,watch, formState: { errors } } = useForm();
     // const {register : registeruser} = useContext(RootStoreContext).userStore;
     const password = useRef({});
     password.current = watch("password", "");
     const history = useHistory();
     const onRegister = (user) => {
-        console.log(user);
-        // registeruser(user,toast,history)
+        registerUser(user,history);
     }
     const errorStyle = {
         fontWeigth: "bolder",
@@ -69,5 +71,7 @@ const Register = () => {
         </Grid>
     )
 }
-
-export default Register
+Register.propTypes = {
+    registerUser : PropTypes.func.isRequired
+  };
+export default connect(null,{registerUser})(Register);

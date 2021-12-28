@@ -2,8 +2,18 @@ import axios, { AxiosResponse } from "axios";
 import { toast } from "react-toastify";
 import { createProductFormData } from "../Helper/formDataUtil";
 
-axios.defaults.baseURL = "http://127.0.0.1:8000/api/";
+axios.defaults.baseURL = "http://127.0.0.1:3000/";
 
+axios.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem("token");
+    if (token) config.headers.Authorization = `Bearer ${token}`;
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
 
 axios.interceptors.response.use(undefined, (error) => {
   if (error.message === "Network Error" && !error.response) {
@@ -32,6 +42,9 @@ axios.interceptors.response.use(undefined, (error) => {
 
 const responseBody = (response) => response.data;
 
+
+
+
 const requests = {
   get: (url) => axios.get(url).then(responseBody),
   post: (url, body) => axios.post(url, body).then(responseBody),
@@ -39,46 +52,25 @@ const requests = {
   del: (url) => axios.delete(url).then(responseBody),
 };
 
-const form = {
-  productPostForm: (url, data) => {
-    const formData = createProductFormData(data);
-    console.log(formData);
-    return axios
-      .post(url, formData, {
-        headers: { "Content-type": "multipart/form-data" },
-      })
-      .then(responseBody);
-  },
-  productPutForm: (url, data) => {
-    const formData = createProductFormData(data);
-    console.log(formData)
-    return axios
-      .put(url, formData, {
-        headers: { "Content-type": "multipart/form-data" },
-      })
-      .then(responseBody);
-  },
 
-};
 
 const Products = {
-  productList: () => requests.get("/"),
+  getProducts: () => requests.get("products/"),
+  getMyProducts : () => requests.get("myproducts/"),
   myProducts : (data ) => requests.post("myproducts/",data),
-  productDetails : (pk ) => requests.get(`${pk}`),
-  addProduct : (product ) => form.productPostForm("create/",product),
-  updateProduct : (product ) => form.productPutForm(`update/${product.pk}/`,product),
-  deleteProduct : (pk ) => requests.del(`delete/${pk}/`)
-
-
+  productDetails : (id ) => requests.get(`products/${id}`),
+  addProduct : (product ) => requests.post("products/",product),
+  updateProduct : (product ) => requests.put(`products/${product.id}/`,product),
+  deleteProduct : (id ) => requests.del(`products/${id}/`)
 };
 
 const User = {
   userList: () => requests.get("users/"),
-  login: (data )  => requests.post("login/",data),
-  register: (body ) => requests.post("register/",body),
-  updateProfile: (body) => requests.put(`updateprofile/${body.id}`,body)
+  login: (body) => requests.post("oauth/token",body),
+  register: (body) => requests.post("users/",body),
+  currentUser: () => requests.get("currentuser/")
 }
 
-const agent = { Products,User };
+const agent = { Products, User };
 
 export default agent;

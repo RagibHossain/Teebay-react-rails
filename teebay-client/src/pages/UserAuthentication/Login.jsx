@@ -1,20 +1,23 @@
-import { useContext } from "react";
 import { useForm } from "react-hook-form";
+import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { Grid, Header, Message } from "semantic-ui-react";
+import { login } from "../../actions/userAuthentication";
 import TeebayButton from "../Common/TeebayButton";
-const Login = () => {
+import PropTypes from "prop-types";
+import {Redirect} from "react-router-dom"
+
+const Login = ({user:{loggedIn},login}) => {
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
   const onLogin = (user) => {
-    // signIn(user);
-    console.log(user);
+    login(user);
   };
 
-  // if(loggedIn) return ( <Redirect to='/updateprofile' />)
+  if(loggedIn) return ( <Redirect to='/myProducts' />)
   const inputStyle = {
     height: "40px",
     width: "100%",
@@ -62,10 +65,11 @@ const Login = () => {
   );
 };
 
-export default Login;
-// git init
-// git add README.md
-// git commit -m "first commit"
-// git branch -M main
-// git remote add origin https://github.com/RagibHossain/Teebay-react-rails.git
-// git push -u origin main
+Login.propTypes = {
+  login : PropTypes.func.isRequired,
+  user : PropTypes.object.isRequired
+};
+const mapStateToProps = (state) => ({
+  user: state.user
+});
+export default connect(mapStateToProps,{login})(Login);
