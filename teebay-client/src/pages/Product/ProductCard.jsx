@@ -1,12 +1,13 @@
 import React from "react";
 import { useHistory } from "react-router";
-import { Icon } from "semantic-ui-react";
+import { Button } from "semantic-ui-react";
 import Category from "../Common/Category";
 import CommonModal from "../Common/CommonModal";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { deleteProduct, setCurrentProduct } from "../../actions/product";
+import { deleteProduct, setCurrentProduct,getProduct } from "../../actions/product";
 import { useEffect } from "react";
+import { Link } from "react-router-dom";
 const ProductCard = ({
   product,
   remove,
@@ -14,19 +15,22 @@ const ProductCard = ({
   edit,
   deleteProduct,
   setCurrentProduct,
+  getProduct
 }) => {
   const history = useHistory();
   const goToPage = (link) => {
     setCurrentProduct(product.id).then(() => {
-      let exactLink = edit ? `/${link}/${product.id}` : `/${link}`;
+      let exactLink = `/${link}/${product.id}` 
       history.push(exactLink);
     });
   };
   useEffect(() => {
 
   },[])
-  const deleteHandleClicked = () => {
-    
+  const viewConvoHandleClicked = () => {
+    getProduct(product.id).then(() => {
+      history.push(`conversations/${product.id}`)
+    })
   }
   return (
     <div
@@ -68,13 +72,19 @@ const ProductCard = ({
       </div>
 
       <p> {product.description}</p>
+      {product.conversations && product.conversations.length > 0 &&
+      <Button onClick={viewConvoHandleClicked}>
+         View Conversations
+      </Button> 
+      }
+      
     </div>
   );
 };
 ProductCard.propTypes = {
   deleteProduct: PropTypes.func.isRequired,
-  setCurrentProduct: PropTypes.func.isRequired,
+  getProduct: PropTypes.func.isRequired,
   product: PropTypes.object.isRequired
 };
 
-export default connect(null, { deleteProduct, setCurrentProduct })(ProductCard);
+export default connect(null, { deleteProduct, getProduct,setCurrentProduct })(ProductCard);

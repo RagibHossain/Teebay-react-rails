@@ -5,7 +5,7 @@ const Category = ({categories}) => {
         <div style={{display:"flex",color:"#788896",marginTop:"10px",marginBottom:"10px"}}>
             Categories : 
             {categories?.map((category) => (
-                <p key={category.id}>{category.name}</p> 
+                <p key={category.id}>{category.name }&nbsp;</p> 
             ))}
         </div>
     )

@@ -47,11 +47,8 @@ class ProductsController < ApplicationController
 
   def my_products
     products = current_user.products.joins([:categories]).distinct.all
-    if products.any?
-      render json: Panko::ArraySerializer.new(products, each_serializer: ProductSerializer).to_json
-    else
-      render json: { message: 'You have nothing' }
-    end
+    render json: Panko::ArraySerializer.new(products, each_serializer: MyProductSerializer).to_json 
+    
   end
 
   private

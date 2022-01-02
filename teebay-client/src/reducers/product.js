@@ -1,7 +1,7 @@
 const initialState = {
   products: [],
   myProducts: [],
-  currentProduct: null,
+  currentProduct: {},
 };
 const productReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -16,6 +16,7 @@ const productReducer = (state = initialState, action) => {
         myProducts: action.payload,
       };
     case "GET_PRODUCT":
+      Object.assign(state.currentProduct);
       return {
         ...state,
         currentProduct: action.payload,
@@ -39,6 +40,7 @@ const productReducer = (state = initialState, action) => {
         products: state.products.filter((x) => x.id !== action.payload),
       };
     case "SET_CURRENT_PRODUCT":
+      Object.assign(state.currentProduct);
       return {
         ...state,
         currentProduct: state.products.find((x) => x.id === action.payload),
@@ -46,7 +48,7 @@ const productReducer = (state = initialState, action) => {
     case "REMOVE_CURRENT_PRODUCT":
       return {
         ...state,
-        currentProduct: null,
+        currentProduct: {},
       };
       case "EMPTY_MY_PRODUCTS":
         return{

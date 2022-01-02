@@ -20,7 +20,6 @@ export const addProduct = (product, history) => async (dispatch) => {
 };
 export const editProduct = (product, history) => async (dispatch) => {
   try {
-    debugger;
     const response = await agent.Products.updateProduct(product);
     console.log(product);
     console.log(response);

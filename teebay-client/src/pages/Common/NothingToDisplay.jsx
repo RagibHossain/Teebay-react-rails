@@ -1,6 +1,6 @@
 import React from "react";
 
-const NoProduct = () => {
+const NothingToDisplay = ({content}) => {
   return (
     <div
       style={{
@@ -10,9 +10,9 @@ const NoProduct = () => {
         alignItems: "center",
       }}
     >
-      <h1>No Products to display</h1>
+      <h1>{content}</h1>
     </div>
   );
 };
 
-export default NoProduct;
+export default NothingToDisplay;

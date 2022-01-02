@@ -13,14 +13,15 @@ import {
   removeCurrentProduct,
 } from "../../actions/product";
 import { categories } from "../../objects/categories";
+import agent from "../../api/agent";
 const EditProduct = ({
-  product: { currentProduct },
   getProduct,
   editProduct,
   removeCurrentProduct,
   match,
 }) => {
   const categories_to_load = categories;
+  const [loadedProduct, setProduct] = useState(null);
   const inputStyle = {
     height: "40px",
     width: "100%",
@@ -28,10 +29,20 @@ const EditProduct = ({
     borderRadius: "2%",
     padding: "5px",
   };
+  let currentProduct = {};
   useEffect(() => {
-   if(!currentProduct) {
-     getProduct(match.params.id);
-    }
+
+     agent.Products.productDetails(match.params.id).then((res) => {
+       setProduct({
+        id: res.id,
+        name: res.name,
+        description: res.description,
+        buy_price: res.buy_price,
+        rent_price: res.rent_price,
+        category_ids: res.categories,
+      })
+     })
+    
 
     // return () => {
     //   removeCurrentProduct();
@@ -43,20 +54,13 @@ const EditProduct = ({
     formState: { errors },
   } = useForm();
   let selectedCategories = [];
-  currentProduct?.categories?.forEach((category) => {
+  if(loadedProduct) loadedProduct.category_ids.forEach((category) => {
     selectedCategories.push(category.id);
   });
   console.log(selectedCategories);
   const history = useHistory();
 
-  const [loadedProduct, setProduct] = useState({
-    id: currentProduct?.id,
-    name: currentProduct?.name,
-    description: currentProduct?.description,
-    buy_price: currentProduct?.buy_price,
-    rent_price: currentProduct?.rent_price,
-    category_ids: selectedCategories,
-  });
+
 
   const onSubmitHandler = () => {
     editProduct(loadedProduct, history);
@@ -72,7 +76,7 @@ const EditProduct = ({
   };
   return (
     <div>
-      {currentProduct && (
+      {loadedProduct && (
         <>
           <MyHeader content="ADD PRODUCT" />
           <form onSubmit={handleSubmit(onSubmitHandler)}>
@@ -81,7 +85,7 @@ const EditProduct = ({
                 {...register("name", { required: "name is Required" })}
                 type="text"
                 placeholder="name"
-                defaultValue={currentProduct.name}
+                defaultValue={loadedProduct.name}
                 style={inputStyle}
                 onChange={(e) => onSelect(e)}
               />
@@ -107,7 +111,7 @@ const EditProduct = ({
                 {...register("description", {
                   required: "Description is Required",
                 })}
-                defaultValue={currentProduct.description}
+                defaultValue={loadedProduct.description}
                 placeholder="Description"
                 style={{ height: "100px" }}
                 onChange={(e) => onSelect(e)}
@@ -121,7 +125,7 @@ const EditProduct = ({
                 <input
                   {...register("buy_price", { required: "Price is Required" })}
                   type="number"
-                  defaultValue={currentProduct.buy_price}
+                  defaultValue={loadedProduct.buy_price}
                   placeholder="Price"
                   style={inputStyle}
                   onChange={(e) => onSelect(e)}
@@ -136,7 +140,7 @@ const EditProduct = ({
                     required: "Rent Price is Required",
                   })}
                   type="number"
-                  defaultValue={currentProduct.rent_price}
+                  defaultValue={loadedProduct.rent_price}
                   placeholder="Rent Price"
                   style={inputStyle}
                   onChange={(e) => onSelect(e)}

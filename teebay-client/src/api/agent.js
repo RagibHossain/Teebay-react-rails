@@ -59,8 +59,8 @@ const Products = {
   getMyProducts : () => requests.get("myproducts/"),
   myProducts : (data ) => requests.post("myproducts/",data),
   productDetails : (id ) => requests.get(`products/${id}`),
-  addProduct : (product ) => requests.post("products/",product),
-  updateProduct : (product ) => requests.put(`products/${product.id}/`,product),
+  addProduct : (product) => requests.post("products/",product),
+  updateProduct : (product) => requests.put(`products/${product.id}/`,product),
   deleteProduct : (id ) => requests.del(`products/${id}/`)
 };
 
@@ -70,7 +70,12 @@ const User = {
   register: (body) => requests.post("users/",body),
   currentUser: () => requests.get("currentuser/")
 }
+const Chat = {
+  createConversation: (data) => requests.post("conversations/",data),
+  getConversation: (id) => requests.get(`conversations/${id}`),
+  getProductConversations: (id) => requests.get(`productconversations/${id}`)
+}
 
-const agent = { Products, User };
+const agent = { Products, User , Chat };
 
 export default agent;

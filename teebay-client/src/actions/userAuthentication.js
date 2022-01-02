@@ -23,7 +23,6 @@ export const login =  (credentials) => async (dispatch) => {
 export const registerUser = (credentials,history) => async (dispatch) => {
   try {
     const response = await agent.User.register(credentials);
-    console.log("hi")
     console.log(response)
     history.push("/")
   }catch(error){

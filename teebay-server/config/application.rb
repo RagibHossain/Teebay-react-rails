@@ -11,7 +11,11 @@ module TeebayServer
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 6.1
     config.active_job.queue_adapter = :sidekiq
+    config.autoload_paths << "#{Rails.root}/lib"
 
+    config.after_initialize do
+    require 'custom_token_response'
+    end
 
     # Configuration for the application, engines, and railties goes here.
     #
