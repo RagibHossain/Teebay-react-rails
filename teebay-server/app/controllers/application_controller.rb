@@ -1,14 +1,17 @@
 class ApplicationController < ActionController::Base
   include Pundit
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
-  # rescue_from NoMethodError, with: :user_not_authorized
-  rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
+  rescue_from NoMethodError, with: :user_not_authenticated
+  # rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
 
   def record_not_found(exception)
     render json: {message: "No record found"}, status: :not_found
   end
   def user_not_authorized(exception)
     render json: {message: "You are not authorized to perform this action"}, status: :forbidden
+  end
+  def user_not_authenticated(exception)
+    render json: {message: "You are not logged in"}, status: :unauthorized
   end
   def action_not_allowed(exception)
     render json: {message: "Method is not allowed"}, status: :bad_request

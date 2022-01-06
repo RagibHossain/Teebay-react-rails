@@ -1,54 +1,57 @@
 class ProductsController < ApplicationController
   def index
-    products = Product.joins([:categories]).distinct.all
-    render json: Panko::ArraySerializer.new(products, each_serializer: ProductSerializer).to_json
+    result = GetAllProducts.call
+    if result.success? 
+      render json: Panko::ArraySerializer.new(result.products, each_serializer: ProductSerializer).to_json
+    else
+      render json: {message: "Couldn't load products"},status: :not_found
+    end
   end
 
   def show
-    product = Product.find(params[:id])
-     render json: ProductSerializer.new.serialize_to_json(product),status: :ok 
-
+    result = GetProduct.call(id: params[:id])
+     if result.success? 
+      render json: ProductSerializer.new.serialize_to_json(result.product),status: :ok 
+     else
+      render json: {message: "No product found"},status: :not_found
+     end
   end
 
   def create
-    user = current_user
-    if user
-      product = Product.new({ **product_params, user_id: user.id })
-      product_created = product.save
-      if product_created
-        ProductMailer.with(user: current_user, product: product).product_created_email.deliver_later
-        render json: { products: product, categories: product.categories }
+      result = UploadProduct.call(product_params: product_params,user: current_user)
+      if result.success?
+        render json: { products: result.product, categories: result.product.categories },status: :ok
       else
-        render json: { message: "Couldn't create product" }
+        render json: {message: result.message},status: :bad_request
       end
-    else
-      render json: { message: 'You are not authorized' }
-    end
   end
 
   def update
-    product = Product.find(params[:id])
-    authorize product
-    product_updated = product.update({ **product_params })
-    if product_updated
-      render json: product
+    result = UpdateProductInfo.call(id: params[:id],product_params: product_params)
+    if result.success?
+      render json: { products: result.product, categories: result.product.categories },status: :ok
     else
-      render json: { message: "Couldn't updated product" }
+      render json: {message: result.message},status: :bad_request
     end
+
   end
 
   def destroy
-    products = Product.all
-    product = Product.find(params[:id])
-    authorize product
-    product.destroy
-    render json: products
+    result = DeleteProduct.call(id: params[:id])
+    if result.success?
+      render json: {message: "Product Deleted Succesfully"}, status: :ok
+    else
+      render json: {message: "Couldn't Delete The product"}, status: :ok
+    end
   end
 
-  def my_products
-    products = current_user.products.joins([:categories]).distinct.all
-    render json: Panko::ArraySerializer.new(products, each_serializer: MyProductSerializer).to_json 
-    
+  def my_products 
+    result = GetMyProducts.call(user: current_user)
+    if result.success?
+      render json: Panko::ArraySerializer.new(result.products, each_serializer: MyProductSerializer).to_json 
+    else
+      render json: {message: result.message}, status: :unauthorized
+    end
   end
 
   private

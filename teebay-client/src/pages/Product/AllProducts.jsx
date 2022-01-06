@@ -6,6 +6,7 @@ import ProductList from "./ProductList";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { getProducts } from "../../actions/product";
+import NothingToDisplay from "../Common/NothingToDisplay";
 const AllProducts = ({ product: { products }, getProducts }) => {
   useEffect(() => {
     if (products.length < 1) getProducts();
@@ -14,7 +15,7 @@ const AllProducts = ({ product: { products }, getProducts }) => {
     <div>
       <TeebayHeader content="All PRODUCTS" />
       {products.length < 1 ? (
-        <div > no products </div>
+        <NothingToDisplay content={"No Products to display"} />
       ) : (
         <>
           <ProductList

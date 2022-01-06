@@ -62,7 +62,7 @@ const ProductDetails = ({
 
           <div>
             
-            {currentProduct.user_id !== user.id && (
+            {user.id && currentProduct.user_id !== user.id && (
               <Button onClick={handleTalkWithOwner} content="Talk with owner" />
             )}
           </div>

@@ -18,23 +18,23 @@ import { useEffect } from "react";
 import Conversations from "./pages/Chat/Conversations";
 function App() {
   const dispatch = useDispatch();
-  const loggedIn = useSelector((state) => state.user.loggedIn)
+  const loggedIn = useSelector((state) => state.user.loggedIn);
   useEffect(() => {
-   if(localStorage.getItem("token")){
-     let user = {
-       access_token: localStorage.getItem("token"),
-       user: JSON.parse(localStorage.getItem("user"))
-     }
-     dispatch({
-       type:"LOGGED_IN",
-       payload: user
-     })
-   }
-  },[])
+    if (localStorage.getItem("token")) {
+      let user = {
+        access_token: localStorage.getItem("token"),
+        user: JSON.parse(localStorage.getItem("user")),
+      };
+      dispatch({
+        type: "LOGGED_IN",
+        payload: user,
+      });
+    }
+  }, []);
   return (
-     <>
+    <>
       <ToastContainer position="top-right" />
-      { loggedIn && <NavBar />}
+      <NavBar />
       <Route exact path="/" component={Login} />
       <Route
         path={"/(.+)"}
@@ -51,7 +51,11 @@ function App() {
                 <Route exact path="/addproduct" component={AddProduct} />
                 <Route exact path="/update/:id" component={EditProduct} />
                 <Route exact path="/allproducts" component={AllProducts} />
-                <Route exact path="/conversations/:id" component={Conversations} />
+                <Route
+                  exact
+                  path="/conversations/:id"
+                  component={Conversations}
+                />
                 <Route exact path="/chat/:id" component={ChatSession} />
                 <Route exact path="/register" component={Register} />
               </Switch>
@@ -59,7 +63,7 @@ function App() {
           </Fragment>
         )}
       />
-     </>
+    </>
   );
 }
 

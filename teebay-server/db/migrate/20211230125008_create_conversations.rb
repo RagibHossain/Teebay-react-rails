@@ -8,6 +8,6 @@ class CreateConversations < ActiveRecord::Migration[6.1]
     end
     add_foreign_key :conversations, :users, column: :sender_id
     add_foreign_key :conversations, :users, column: :reciever_id
-    add_foreign_key :conversations, :products, column: :product_id
+    add_foreign_key :conversations, :products, column: :product_id , on_delete: :cascade
   end
 end

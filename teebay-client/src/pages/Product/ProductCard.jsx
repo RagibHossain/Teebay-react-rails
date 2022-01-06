@@ -5,7 +5,11 @@ import Category from "../Common/Category";
 import CommonModal from "../Common/CommonModal";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { deleteProduct, setCurrentProduct,getProduct } from "../../actions/product";
+import {
+  deleteProduct,
+  setCurrentProduct,
+  getProduct,
+} from "../../actions/product";
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
 const ProductCard = ({
@@ -15,23 +19,21 @@ const ProductCard = ({
   edit,
   deleteProduct,
   setCurrentProduct,
-  getProduct
+  getProduct,
 }) => {
   const history = useHistory();
   const goToPage = (link) => {
     setCurrentProduct(product.id).then(() => {
-      let exactLink = `/${link}/${product.id}` 
+      let exactLink = `/${link}/${product.id}`;
       history.push(exactLink);
     });
   };
-  useEffect(() => {
-
-  },[])
+  useEffect(() => {}, []);
   const viewConvoHandleClicked = () => {
     getProduct(product.id).then(() => {
-      history.push(`conversations/${product.id}`)
-    })
-  }
+      history.push(`conversations/${product.id}`);
+    });
+  };
   return (
     <div
       style={{
@@ -72,19 +74,18 @@ const ProductCard = ({
       </div>
 
       <p> {product.description}</p>
-      {product.conversations && product.conversations.length > 0 &&
-      <Button onClick={viewConvoHandleClicked}>
-         View Conversations
-      </Button> 
-      }
-      
+      {product.conversations && product.conversations.length > 0 && (
+        <Button onClick={viewConvoHandleClicked}>View Conversations</Button>
+      )}
     </div>
   );
 };
 ProductCard.propTypes = {
   deleteProduct: PropTypes.func.isRequired,
   getProduct: PropTypes.func.isRequired,
-  product: PropTypes.object.isRequired
+  product: PropTypes.object.isRequired,
 };
 
-export default connect(null, { deleteProduct, getProduct,setCurrentProduct })(ProductCard);
+export default connect(null, { deleteProduct, getProduct, setCurrentProduct })(
+  ProductCard
+);

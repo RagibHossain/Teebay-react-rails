@@ -7,6 +7,7 @@ import { getMyProducts, emptyMyProducts } from "../../actions/product";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import NothingToDisplay from "../Common/NothingToDisplay";
+import RedirectToLogin from "../Common/RedirectToLogin";
 const MyProducts = ({
   product: { myProducts },
   getMyProducts,
@@ -14,16 +15,19 @@ const MyProducts = ({
 }) => {
   const history = useHistory();
   useEffect(() => {
-    if (myProducts.length < 1) getMyProducts();
+     getMyProducts();
     return () => {
       emptyMyProducts();
     };
   }, [getMyProducts, emptyMyProducts]);
   return (
     <div>
+       <RedirectToLogin />
       <TeebayHeader content="MY PRODUCTS" />
       {myProducts.length < 1 ? (
+        <>
         <NothingToDisplay content="You don't have any products right now" />
+        </>
       ) : (
         <>
           <ProductList

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_12_30_132318) do
+ActiveRecord::Schema.define(version: 2022_01_04_150946) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -107,10 +107,10 @@ ActiveRecord::Schema.define(version: 2021_12_30_132318) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
-  add_foreign_key "conversations", "products"
+  add_foreign_key "conversations", "products", on_delete: :cascade
   add_foreign_key "conversations", "users", column: "reciever_id"
   add_foreign_key "conversations", "users", column: "sender_id"
-  add_foreign_key "messages", "conversations"
+  add_foreign_key "messages", "conversations", on_delete: :cascade
   add_foreign_key "messages", "users"
   add_foreign_key "oauth_access_grants", "oauth_applications", column: "application_id"
   add_foreign_key "oauth_access_tokens", "oauth_applications", column: "application_id"

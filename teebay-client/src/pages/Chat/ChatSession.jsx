@@ -21,7 +21,7 @@ const ChatSession = ({ match,getProduct }) => {
   const cable = actionCable.createConsumer("ws://127.0.0.1:3000/cable");
   useEffect(() => {
     agent.Chat.getConversation(match.params.id).then((res) => {
-      getProduct(match.params.id)
+      getProduct(res.product_id)
       setConvo(res);
       setMessages(res.messages);
     });
@@ -33,11 +33,9 @@ const ChatSession = ({ match,getProduct }) => {
       },
       {
         received: (updatedMessages) => {
-          console.log(updatedMessages.messages);
           setMessages(JSON.parse(updatedMessages.messages));
         },
         createChatMessage(text) {
-          // console.log(text)
           chatChannelRef.current.perform("create_message", {
             text: text.text,
             sender_id: user.id,

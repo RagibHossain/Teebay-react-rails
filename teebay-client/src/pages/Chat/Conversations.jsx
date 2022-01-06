@@ -23,7 +23,7 @@ const Conversations = ({ match , getProduct }) => {
     agent.Chat.createConversation({
       sender_id: data.sender_id,
       reciever_id: data.reciever_id,
-      product_id: currentProduct.id
+      product_id: data.product_id
     }).then((response) => {
       history.push(`/chat/${response.id}`)
     })
@@ -44,4 +44,4 @@ const Conversations = ({ match , getProduct }) => {
 Conversations.proptypes = {
   getProduct : PropTypes.func.isRequired
 }
-export default connect(null,{getProduct}) (Conversations);
+export default connect(null,{getProduct})(Conversations);

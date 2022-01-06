@@ -21,8 +21,6 @@ export const addProduct = (product, history) => async (dispatch) => {
 export const editProduct = (product, history) => async (dispatch) => {
   try {
     const response = await agent.Products.updateProduct(product);
-    console.log(product);
-    console.log(response);
    await dispatch({
       type: "EDIT_PRODUCT",
       payload: product,
@@ -91,7 +89,6 @@ export const getProduct = (productId) => async (dispatch) => {
       type: "GET_PRODUCT",
       payload: result,
     });
-    console.log(result);
   } catch (error) {
     console.log(error);
   }

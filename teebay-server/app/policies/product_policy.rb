@@ -11,10 +11,10 @@ class ProductPolicy < ApplicationPolicy
   end
 
   def update?
-    product.user_id == user.id
+   !!user && product.user_id == user.id
   end
 
   def destroy?
-    product.user_id == user.id
+   !!user &&  product.user_id == user.id
   end
 end

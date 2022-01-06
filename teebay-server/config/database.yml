@@ -80,8 +80,4 @@ test:
 # Read https://guides.rubyonrails.org/configuring.html#configuring-a-database
 # for a full overview on how database connection configuration can be specified.
 #
-production:
-  <<: *default
-  database: teebay_server_production
-  username: teebay_server
-  password: <%= ENV['TEEBAY_SERVER_DATABASE_PASSWORD'] %>
+

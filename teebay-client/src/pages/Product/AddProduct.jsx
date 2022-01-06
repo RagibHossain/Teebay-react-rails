@@ -8,6 +8,7 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import "./product.css";
 import { addProduct } from "../../actions/product";
+import RedirectToLogin from "../Common/RedirectToLogin";
 const AddProduct = ({ addProduct }) => {
   const categories = [
     {
@@ -72,6 +73,7 @@ const AddProduct = ({ addProduct }) => {
   };
   return (
     <div>
+      <RedirectToLogin />
       <MyHeader content="ADD PRODUCT" />
       <form onSubmit={handleSubmit(onSubmitHandler)}>
         <div className="input">

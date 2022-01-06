@@ -28,6 +28,10 @@ gem "sidekiq"
 
 gem 'sidekiq-cron'
 
+gem "interactor", "~> 3.0"
+gem "interactor-rails", "~> 2.0"
+
+
 # Use Active Storage variant
 # gem 'image_processing', '~> 1.2'
 

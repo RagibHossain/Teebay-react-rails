@@ -18,24 +18,19 @@ axios.interceptors.request.use(
 axios.interceptors.response.use(undefined, (error) => {
   if (error.message === "Network Error" && !error.response) {
     toast.error("Network error -- make sure API server is running");
-    console.log(error);
   }
-
 
   if (error.response.status === 404) {
-     toast.error(error.response.data)
+     toast.error(error.response.data.message)
   }
   else if (error.response.status === 400) {
-    toast.error(error.response.data)
+    toast.error(error.response.data.message)
   }
   else if (error.response.status === 500) {
-    toast.error(error.response.data)
+    toast.error(error.response.data.message)
   }
   else if (error.response.status === 401) {
-    toast.error(error.response.data)
-  }
-  else if (error.response.status === 417) {
-    toast.error(error.response.data)
+    toast.error(error.response.data.message)
   }
   else throw error.response;
 });

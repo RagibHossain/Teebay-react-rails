@@ -94,6 +94,10 @@ GEM
       activesupport (>= 5.0)
     i18n (1.8.11)
       concurrent-ruby (~> 1.0)
+    interactor (3.1.2)
+    interactor-rails (2.2.1)
+      interactor (~> 3.0)
+      rails (>= 4.2)
     jbuilder (2.11.5)
       actionview (>= 5.0.0)
       activesupport (>= 5.0.0)
@@ -236,6 +240,8 @@ DEPENDENCIES
   byebug
   capybara (>= 3.26)
   doorkeeper (~> 5.5)
+  interactor (~> 3.0)
+  interactor-rails (~> 2.0)
   jbuilder (~> 2.7)
   listen (~> 3.3)
   panko_serializer

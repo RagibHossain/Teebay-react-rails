@@ -14,6 +14,7 @@ import {
 } from "../../actions/product";
 import { categories } from "../../objects/categories";
 import agent from "../../api/agent";
+import RedirectToLogin from "../Common/RedirectToLogin";
 const EditProduct = ({
   getProduct,
   editProduct,
@@ -57,7 +58,6 @@ const EditProduct = ({
   if(loadedProduct) loadedProduct.category_ids.forEach((category) => {
     selectedCategories.push(category.id);
   });
-  console.log(selectedCategories);
   const history = useHistory();
 
 
@@ -76,6 +76,7 @@ const EditProduct = ({
   };
   return (
     <div>
+      <RedirectToLogin />
       {loadedProduct && (
         <>
           <MyHeader content="ADD PRODUCT" />
